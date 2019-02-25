@@ -1,12 +1,13 @@
 # doctors and patients take home challenge
 
 Build a simple, but well-crafted and appealing web application that allows doctors and patients to collect and share healthcare information:
-- Patients’ personal details, including:
+
+Patients’ personal details, including:
   - Name
   - Age
-  - Email Address
   - Mailing Address
   - Phone Number
+  - Email Address
 
 Functional Requirements
 - Doctors and Patients sign in with username / password credentials
@@ -22,6 +23,28 @@ Technical Requirements
 - We’re looking for a complete client and server implementation: a browser-based single page application that communicates via HTTP calls to an API to fetch and store data. Use React to implement your web application and Node.js for your API server. You’re welcome to use any additional libraries or technologies you like.
 - No need to create a user registration process, feel free to seed accounts.
 - All data must be persisted.
+
+## INSTRUCTIONS TO RUN
+
+1. `npm install`
+2. make sure have sqlite3 installed
+3. `npm run db:migrate`
+4. (OPTIONAL) `npm run db:seed` 
+5. `npm run start:dev`
+
+## first thoughts
+
+- Node.js
+- PM2/systemd for process management
+  - can I calculate what PM2 does at the systemd level?
+- Chef script to deploy this?
+- Docker as well?
+- Kubernetes research?
+  - "Kubernetes is a container orchestration system for Docker containers that is more extensive than Docker Swarm and is meant to coordinate clusters of nodes at scale in production in an efficient manner. It works around the concept of pods, which are scheduling units (and can contain one or more containers) in the Kubernetes ecosystem, and they are distributed among nodes to provide high availability. One can easily run a Docker build on a Kubernetes cluster, but Kubernetes itself is not a complete solution and is meant to include custom plugins."
+
+## getting persistent storage up and running using sqlite local file IO db
+
+
 
 ## phone call 2019-02-21 with Chris Tava
 

@@ -1,0 +1,124 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "0.1.0",
+        "title": "doctors-and-patients",
+        "description": "",
+        "contact": {
+            "name": "Christian Battaglia",
+            "email": "christian.d.battaglia@gmail.com",
+            "url": "https://github.com/cdbattags/doctors-and-patients"
+        }
+    },
+    "basePath": "/api",
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "securityDefinitions": {
+        "authorizationHeader": {
+            "type": "apiKey",
+            "in": "header",
+            "name": "Authorization"
+        }
+    },
+    "security": [{
+        "authorizationHeader": []
+    }],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/users": {
+            "x-swagger-router-controller": "user-controller",
+            "get": {
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "includeArchived",
+                        "description": "Flag indicating if archived records should be included in the request.",
+                        "type": "boolean",
+                        "default": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "since",
+                        "type": "integer",
+                        "description": "Retrieve only records since this timestamp in milliseconds elapsed since the UNIX epoch."
+                    }
+                ],
+                "operationId": "getList",
+                "responses": {
+                    "200": {
+                        "description": "Array of users.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/User"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "User": {
+            "type": "object",
+            "title": "User",
+            "description": "Object that defines the User.",
+            "properties": {
+                "userKey": {
+                    "type": "string",
+                    "description": "A business key for the user."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name."
+                },
+                "age": {
+                    "type": "number",
+                    "description": "An integer age."
+                },
+                "mailingAddress": {
+                    "type": "string",
+                    "description": "Mailing address."
+                },
+                "phone": {
+                    "type": "string",
+                    "description": "Phone number."
+                },
+                "email": {
+                    "type": "string",
+                    "description": "Email."
+                }
+            
+            },
+            "example": {
+                "userKey": "b8ef5ee6-eaea-4914-aaa2-edb080ff3856",
+                "name": "Ron Weasley",
+                "age": 25,
+                "mailingAddress": "1 Hogwarts, Somewhere, UK",
+                "phone": "+17705979389",
+                "email": "ronnie@hogwarts.edu",
+                "createdAt": "2019-01-14T16:15:00.000Z",
+                "updatedAt": "2019-02-09T12:05:00.000Z"
+            }
+        }
+    }
+}

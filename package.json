@@ -1,0 +1,64 @@
+{
+    "name": "doctors-and-patients",
+    "version": "0.1.0",
+    "scripts": {
+        "db:seed": "node_modules/.bin/sequelize db:seed:all --config ./config/database.json",
+        "db:migrate": "node_modules/.bin/sequelize db:migrate --config ./config/database.json",
+        "build:dev": "node_modules/.bin/webpack --color --progress --config build/webpack.dev.js",
+        "build:prod": "node_modules/.bin/webpack --color --progress --config build/webpack.prod.js",
+        "start:dev": "npm run db:migrate && node ./node_modules/nodemon/bin/nodemon.js ./bin/doctors-and-patients",
+        "test": "jest --verbose"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@babel/core": "^7.1.6",
+        "@babel/preset-env": "^7.1.6",
+        "babel-core": "^7.0.0-bridge.0",
+        "babel-jest": "^23.6.0",
+        "babel-loader": "^8.0.4",
+        "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+        "clean-webpack-plugin": "^1.0.0",
+        "copy-webpack-plugin": "^4.6.0",
+        "css-loader": "^2.0.0",
+        "html-loader": "^0.5.5",
+        "jest": "^23.6.0",
+        "jest-html-reporter": "^2.4.2",
+        "mini-css-extract-plugin": "^0.5.0",
+        "nodemon": "^1.18.8",
+        "webpack": "^4.25.1",
+        "webpack-cli": "^3.1.2",
+        "webpack-merge": "^4.1.5"
+    },
+    "jest": {
+        "coverageReporters": [
+            "html"
+        ],
+        "coveragePathIgnorePatterns": [
+            "/mocks"
+        ],
+        "testEnvironment": "node",
+        "testPathIgnorePatterns": [
+            "/node_modules/"
+        ]
+    },
+    "dependencies": {
+        "axios": "^0.18.0",
+        "body-parser": "^1.18.3",
+        "compression": "^1.7.3",
+        "cors": "^2.8.5",
+        "express": "^4.16.4",
+        "json-schema-deref-sync": "^0.7.0",
+        "lodash": "^4.17.11",
+        "minimist": "^1.2.0",
+        "moment": "^2.24.0",
+        "morgan": "^1.9.1",
+        "sequelize": "^4.42.0",
+        "sequelize-cli": "^5.4.0",
+        "sqlite3": "^4.0.6",
+        "string-format": "^2.0.0",
+        "swagger-tools": "^0.10.4",
+        "uuid": "^3.3.2",
+        "winston": "^3.2.1"
+    }
+}

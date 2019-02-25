@@ -1,0 +1,12 @@
+{
+    "global": {
+        "define": {
+            "timestamps": false,
+            "underscored": true
+        }
+    },
+    "development": {
+        "dialect": "sqlite",
+        "storage": "./doctors-and-patients.sqlite3"
+    }
+}

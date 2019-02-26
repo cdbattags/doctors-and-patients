@@ -10,11 +10,6 @@ module.exports = (sequelize, DataTypes) => {
         'User', 
         {
             id: {
-                type: DataTypes.BIGINT,
-                autoIncrement: true,
-                primaryKey: true
-            },
-            businessKey: {
                 type: DataTypes.UUID,
                 defaultValue: DataTypes.UUIDV4,
                 field: 'business_key',
@@ -49,6 +44,18 @@ module.exports = (sequelize, DataTypes) => {
                 field: 'email',
                 allowNull: false
             },
+            passwordHash: {
+                type: DataTypes.STRING(255),
+                field: 'password_hash',
+                allowNull: false
+            },
+            type: {
+                type: DataTypes.ENUM(
+                    doctorPatientConstants.USER_TYPE.DOCTOR,
+                    doctorPatientConstants.USER_TYPE.PATIENT
+                ),
+                allowNull: false
+            },
             createdAt: {
                 type: DataTypes.DATE,
                 field: 'created_at',
@@ -69,7 +76,16 @@ module.exports = (sequelize, DataTypes) => {
                 }
             ],
             tableName: 'users'
-        })
+        }
+    )
+
+    User.hasMany(User, {
+        as: 'doctors'
+    })
+
+    User.hasMany(User, {
+        as: 'patients'
+    })
 
     return User
 }

@@ -37,7 +37,7 @@ module.exports = {
      */
     start: (options = {}) => {
         
-        let fixtures = null
+        let fixtures = null // we can use this instead of a "seed system"
 
         const sequelizeOptions = 
             (options.clear || options.fixtures) ? { force: true } : null
@@ -46,22 +46,13 @@ module.exports = {
             .sequelize
             .sync(sequelizeOptions)
             .then(() => {
-                if (options.fixtures) {
-                    fixtures = _.isArray(options.fixtures) ? options.fixtures : null
-                    return FixtureDataService.loadFixtures(fixtures)
-                } else {
-                    return Promise.resolve(null)
-                }
-            })
-            .then((data) => {
-                fixtures = data
                 return app.swaggerize()
             })
             .then((app) => {
                 return new Promise((resolve, reject) => {
                         server = app.listen(app.get('port'), () => {
                             logger.info(`"doctors-and-patients" is listening on port ${server.address().port}`)
-                            resolve(fixtures)
+                            resolve(server)
                         })
                     }
                 )

@@ -1,41 +1,53 @@
+const doctorPatientConstants = require('../backend/common/doctors-and-patients-constants')
+
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('users', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.BIGINT
-      },
-      "business_key": {
-        type: Sequelize.UUID
-      },
-      name: {
-        type: Sequelize.STRING(255)
-      },
-      age: {
-        type: Sequelize.SMALLINT
-      },
-      "mailing_address": {
-        type: Sequelize.STRING(255)
-      },
-      phone: {
-        type: Sequelize.STRING(255)
-      },
-      email: {
-        type: Sequelize.STRING(255)
-      },
-      "created_at": {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      "updated_at": {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
+  up: async (queryInterface, Sequelize) => {
+    return [
+      await queryInterface.createTable('users', {
+        id: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          autoIncrement: false,
+          defaultValue: Sequelize.UUIDV4,
+          primaryKey: true
+        },
+        name: {
+          type: Sequelize.STRING(255)
+        },
+        age: {
+          type: Sequelize.SMALLINT
+        },
+        'mailing_address': {
+          type: Sequelize.STRING(255)
+        },
+        phone: {
+          type: Sequelize.STRING(255)
+        },
+        email: {
+          type: Sequelize.STRING(255)
+        },
+        'password_hash': {
+          type: Sequelize.CHAR(60)
+        },
+        type: {
+          allowNull: false,
+          type: Sequelize.ENUM(
+            doctorPatientConstants.USER_TYPE.DOCTOR,
+            doctorPatientConstants.USER_TYPE.PATIENT
+          )
+        },
+        'created_at': {
+          allowNull: false,
+          type: Sequelize.DATE
+        },
+        'updated_at': {
+          allowNull: false,
+          type: Sequelize.DATE
+        }
+      })
+    ]
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('users');
+    return queryInterface.dropTable('users')
   }
 };

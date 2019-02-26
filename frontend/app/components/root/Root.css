@@ -1,0 +1,5 @@
+.doctors-and-patients {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}

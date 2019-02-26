@@ -7,12 +7,13 @@ const doctorPatientConstants = require('../backend/common/doctors-and-patients-c
 
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define(
-        'User', 
+        'User',
         {
             id: {
+                primaryKey: true,
                 type: DataTypes.UUID,
                 defaultValue: DataTypes.UUIDV4,
-                field: 'business_key',
+                field: 'id',
                 allowNull: false,
                 unique: true,
                 validate: {
@@ -68,24 +69,17 @@ module.exports = (sequelize, DataTypes) => {
             }
         },
         {
-            indexes: [
-                {
-                    fields: ['business_key'],
-                    name: 'business_key_index',
-                    unique: true
-                }
-            ],
             tableName: 'users'
         }
     )
 
-    User.hasMany(User, {
-        as: 'doctors'
-    })
+    // User.hasMany(User, {
+    //     as: 'doctors'
+    // })
 
-    User.hasMany(User, {
-        as: 'patients'
-    })
+    // User.hasMany(User, {
+    //     as: 'patients'
+    // })
 
     return User
 }

@@ -28,9 +28,6 @@ const UserController = {
         }
 
         return models.User.findAll({
-                attributes: {
-                    exclude: ['id']
-                },
                 where: where,
                 order: [
                     ['created_at', 'DESC']

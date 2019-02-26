@@ -1,12 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import App from '.'
-import * as serviceWorker from './serviceWorker'
+import App from './components/root/Root'
 
 ReactDOM.render(
     <App />,
     document.getElementById('root')
 )
-
-serviceWorker.unregister()

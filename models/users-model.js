@@ -73,13 +73,5 @@ module.exports = (sequelize, DataTypes) => {
         }
     )
 
-    // User.hasMany(User, {
-    //     as: 'doctors'
-    // })
-
-    // User.hasMany(User, {
-    //     as: 'patients'
-    // })
-
     return User
 }

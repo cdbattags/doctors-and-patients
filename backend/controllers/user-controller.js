@@ -2,7 +2,12 @@ const logger = require('../common/logger')(module.filename)
 const models = require('../sequelize-registry')
 const _ = require('lodash')
 const moment = require('moment')
-const Op = models.sequelize.Op;
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
+const Op = models.sequelize.Op
+const fs = require('fs')
+const path = require('path')
+const jwtDecode = require('jwt-decode')
 
 const UserController = {
     /**
@@ -49,8 +54,8 @@ const UserController = {
 
         const params = request.swagger.params
 
-        const email = _.get(params, 'email.value', null)
-        const password = _.get(params, 'password.value', null)
+        const email = _.get(params, 'loginData.value.email', null)
+        const password = _.get(params, 'loginData.value.password', null)
 
         const where = {
             email: {
@@ -61,11 +66,12 @@ const UserController = {
         return models.User
             .findOne({
                 attributes: {
-                    exclude: ['id'],
                     where: where
                 }
             })
-            .then((user) => {
+            .then((result) => {
+
+                const user = result.dataValues
 
                 if (user) {
 
@@ -77,11 +83,19 @@ const UserController = {
                     if (match) {
 
                         const payload = _.omit(
-                            user.serialize(),
-                            ['password_hash']
+                            user,
+                            ['passwordHash']
                         )
 
-                        const token = jwt.sign(payload)
+                        const token = jwt.sign(
+                            payload,
+                            fs.readFileSync(path.join(__dirname, '../../config/jwtRS256.key')),
+                            {
+                                algorithm: 'RS256',
+                                expiresIn: '1h'
+                            }
+                        )
+
 
                         response.send(token)
 
@@ -115,6 +129,90 @@ const UserController = {
                     })
             })
 
+    },
+
+    /**
+     * POST /login
+     */
+    me: (request, response, next) => {
+
+        const token = request.headers.authorization
+
+        if (
+            !jwt.verify(
+                token,
+                fs.readFileSync(path.join(__dirname, '../../config/jwtRS256.key.pub')),
+                {
+                    algorithms: ['RS256']
+                }
+            )
+        ) {
+            response
+                .status(401)
+                .json({
+                    message: "token not verified"
+                })
+        }
+
+        const decodedToken = jwtDecode(token)
+
+        console.log(decodedToken)
+
+        const queries = []
+
+        queries.push(
+            models.User
+            .findOne({
+                attributes: {
+                    where: {
+                        email: {
+                            [Op.eq]: decodedToken.email
+                        }
+                    }
+                }
+            })
+        )
+
+        queries.push(
+            models
+                .sequelize
+                .query(`SELECT * FROM doctor_patients as dp JOIN users as u ON dp.patient = u.id WHERE doctor = '${decodedToken.id}'`)
+        )
+
+        Promise.all(queries)
+            .then((results) => {
+
+                const user = results[0].dataValues
+                const patients = results[1][0]
+
+                if (user && patients) {
+
+                    response
+                        .status(200)
+                        .json({
+                            ...user,
+                            patients: patients
+                        })
+
+                } else {
+
+                    response
+                        .status(404)
+                        .json({
+                            message: 'no user by that email found'
+                        })
+
+                }
+
+            })
+            .catch((error) => {
+                logger.error(error)
+                response
+                    .status(500)
+                    .json({
+                        message: "an unknown error occurred"
+                    })
+            })
     }
 }
 

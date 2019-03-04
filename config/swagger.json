@@ -32,6 +32,33 @@
         "application/json"
     ],
     "paths": {
+        "/me": {
+            "x-swagger-router-controller": "user-controller",
+            "get": {
+                "operationId": "me",
+                "responses": {
+                    "200": {
+                        "description": "Your user.",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/users": {
             "x-swagger-router-controller": "user-controller",
             "get": {
@@ -59,6 +86,51 @@
                             "items": {
                                 "$ref": "#/definitions/User"
                             }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/login": {
+            "x-swagger-router-controller": "user-controller",
+            "post": {
+                "parameters": [{
+                        "in": "body",
+                        "name": "loginData",
+                        "description": "Email and password.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": ["name", "email"]
+                        }
+                    }
+                ],
+                "operationId": "login",
+                "responses": {
+                    "200": {
+                        "description": "Array of users.",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/User"
                         }
                     },
                     "400": {

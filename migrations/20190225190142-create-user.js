@@ -27,7 +27,7 @@ module.exports = {
           type: Sequelize.STRING(255)
         },
         'password_hash': {
-          type: Sequelize.CHAR(60)
+          type: Sequelize.STRING(255)
         },
         type: {
           allowNull: false,

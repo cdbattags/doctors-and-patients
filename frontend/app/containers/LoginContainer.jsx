@@ -10,8 +10,12 @@ class LoginContainer extends Component {
         super(props)
 
         this.state = {
-            email: "",
-            password: ""
+            email: '',
+            password: '',
+            message: {
+                color: '',
+                text: ''
+            }
         }
 
         this.handleFormSubmit = this.handleFormSubmit.bind(this)
@@ -27,8 +31,7 @@ class LoginContainer extends Component {
             prevState => ({
                 ...prevState,
                 [name]: value
-            }),
-            () => console.log(this.state[name])
+            })
         )
     }
 
@@ -50,16 +53,22 @@ class LoginContainer extends Component {
                     "Content-Type": "application/json"
                 }
             }
-        ).then(response => {
-            console.log(response)
+        )
+        .then(response => {
             localStorage.setItem('token', response.data)
             location.reload(true)
-        }).catch(error => {
-            console.log(error)
-            this.state = {
-                email: "",
-                password: ""
-            }
+        })
+        .catch(error => {
+            this.setState(
+                prevState => ({
+                    message: {
+                        color: 'red',
+                        text: error.toString()
+                    },
+                    email: '',
+                    password: ''
+                })
+            )
         })
     }
 
@@ -88,6 +97,9 @@ class LoginContainer extends Component {
                     title={"Submit"}
                     style={buttonStyle}
                 />
+
+                <div style={{color: this.state.message.color}}>{this.state.message.text}</div>
+
             </form>
         )
     }

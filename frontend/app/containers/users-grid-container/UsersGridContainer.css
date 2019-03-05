@@ -1,0 +1,17 @@
+.users-container {
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-auto-flow: column;
+}
+
+.left-half {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid black;
+}
+
+.right-half {
+    padding-left: 10px;
+    display: grid;
+    grid-auto-flow: row dense;
+}

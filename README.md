@@ -1,38 +1,41 @@
-# doctors and patients take home challenge
+# INSTRUCTIONS TO RUN
 
-Build a simple, but well-crafted and appealing web application that allows doctors and patients to collect and share healthcare information:
-
-Patients’ personal details, including:
-  - Name
-  - Age
-  - Mailing Address
-  - Phone Number
-  - Email Address
-
-Functional Requirements
-- Doctors and Patients sign in with username / password credentials
-- The system recognizes the user as either a doctor or a patient
-- Upon signing in, doctors see a listing of patients in the system.
-  - Doctors can also search for patients by name.
-- When a doctor selects a patient:
-  - The patient’s personal details are displayed.
-- Upon signing in, patients see an overview of their information in the system:
-  - Their personal details are displayed, able to be edited.
-
-Technical Requirements
-- We’re looking for a complete client and server implementation: a browser-based single page application that communicates via HTTP calls to an API to fetch and store data. Use React to implement your web application and Node.js for your API server. You’re welcome to use any additional libraries or technologies you like.
-- No need to create a user registration process, feel free to seed accounts.
-- All data must be persisted.
-
-## INSTRUCTIONS TO RUN
-
-1. `npm install`
-2. make sure have sqlite3 installed
+1. `npm install` (sorry for the delay here, first install is insane now with React/Babel these days)
+2. make sure have sqlite3 installed (if macOS, https://brewformulas.org/sqlite)
 3. `npm run db:migrate`
-4. (OPTIONAL) `npm run db:seed` 
-5. (OPTIONAL) TODO generate RSA private/public
-6. `npm run start:dev`
+4. `npm run db:seed` 
+5. (OPTIONAL) TODO generate your own RSA256 private/public key and add to `config/`
+6. `npm run build:prod` to do webpack things
+7. `npm run start:dev`
+8. open browser, go to localhost:9300
+9. email "user1@doc-pat.co" and password "demo1234"
+10. logout and test email "user2@doc-pat.co" and same password "demo1234"
 
-## other info
+# other things
 
-feel free to check out [CONTEXT.md](./CONTEXT.md) for more info
+- sorry for the delay on this, I have about 6 "take-homes" in my queue right now interviewing all day Monday-Friday (trying to do them in received order)
+- things I added outside the scope of the project for better or for worse
+  - process management hooks
+  - RSA encryption for JWT so that you can trust data inside and comes with free expiration
+  - bcrypt hashing for password storage
+  - some better than normal logging (expermenting with this for personal use as well)
+- I used sqlite3 for persistant storage because I wanted to use this to see what's changed from when I've used it on Android
+- my react is pretty sloppy but I dove deep into all that's changed with React 16 and made sure to figure out where the static method `getDerivedStateFromProps` comes into play
+- decided to go with a vanilla sql query in the controller at one point with the join because I was fed up with sequelize at some point doing self joins to make the Doctor/Patient connection
+  - at least this way, you can super easily have a doctor having a doctor and anyone having more than one doctor
+- areas to improve
+  - cleanup logs
+  - cleanup swagger responses/errors
+  - auth checks on updates
+  - React redux (maybe? meh, I always try and stay as light as possible)
+  - loading user feedback (animations)
+  - wire in sequelize relation so no raw queries
+  - frontend urls are fakes and you can't go back to them if you hit the page directly
+    - need to add hard refresh mapping at backend level but ideally all this would be static anyway
+
+---
+
+Sincerely hope not too late on this! Let me know what you think.
+
+Best,
+Christian

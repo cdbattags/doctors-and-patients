@@ -10,36 +10,73 @@ const path = require('path')
 const jwtDecode = require('jwt-decode')
 
 const UserController = {
-    /**
-     * GET /insights
-     */
-    getList: (request, response, next) => {
+
+    getMany: (request, response, next) => {
         
         const params = request.swagger.params
-        
-        // const includeArchived = params.includeArchived.value
-
-        const since = _.get(params, 'since.value', null)
-
-        // const authToken = request.headers.authorization
-
-        const where = {}
-        
-        if (since) {
-            const sinceDate = moment(since).format('YYYY-MM-DD HH:mm:ss');
-            where.createdAt = {
-                [Op.gt]: sinceDate
-            }
-        }
 
         return models.User.findAll({
-                where: where,
                 order: [
-                    ['created_at', 'DESC']
+                    ['updated_at', 'DESC']
                 ]
             })
             .then((users) => {
                 response.status(200).send(users)
+            })
+            .catch((err) => {
+                console.log('There was an error querying users', JSON.stringify(err))
+                return response.status(500).send(err)
+            })
+    },
+
+    getOne: (request, response, next) => {
+
+        const params = request.swagger.params
+
+        const userId = _.get(params, 'userId.value', null)
+
+        return models.User.findOne({
+                where: {
+                    id: userId
+                }
+            })
+            .then((user) => {
+                response.status(200).send(user)
+            })
+            .catch((err) => {
+                console.log('There was an error querying users', JSON.stringify(err))
+                return response.status(500).send(err)
+            })
+    },
+
+    updateOne: (request, response, next) => {
+        
+        const updatesNotPermitted = [
+            'passwordHash',
+            'id',
+            'updated_at',
+            'created_at',
+            'patients'
+        ]
+
+        const params = request.swagger.params
+
+        const userData = _.omit(
+            _.get(params, 'userData.value', null),
+            updatesNotPermitted
+        )
+
+        const userId = _.get(params, 'userId.value', null)
+
+        return models.User.update(
+            userData,
+            {
+                where: {
+                    id: userId
+                }
+            })
+            .then((user) => {
+                response.status(200).send(user)
             })
             .catch((err) => {
                 console.log('There was an error querying users', JSON.stringify(err))
@@ -65,11 +102,17 @@ const UserController = {
         
         return models.User
             .findOne({
-                attributes: {
-                    where: where
-                }
+                where: where
             })
             .then((result) => {
+                
+                if (result === null) {
+                    response
+                        .status(404)
+                        .json({
+                            message: 'no user by that email found'
+                        })
+                }
 
                 const user = result.dataValues
 
@@ -100,7 +143,6 @@ const UserController = {
                         response.send(token)
 
                     } else {
-
                         response
                             .status(401)
                             .json({
@@ -108,19 +150,11 @@ const UserController = {
                             })
 
                     }
-
-                } else {
-
-                    response
-                        .status(404)
-                        .json({
-                            message: 'no user by that email found'
-                        })
-
                 }
 
             })
             .catch((error) => {
+                console.log(error)
                 logger.error(error)
                 response
                     .status(500)
@@ -163,11 +197,9 @@ const UserController = {
         queries.push(
             models.User
             .findOne({
-                attributes: {
-                    where: {
-                        email: {
-                            [Op.eq]: decodedToken.email
-                        }
+                where: {
+                    email: {
+                        [Op.eq]: decodedToken.email
                     }
                 }
             })

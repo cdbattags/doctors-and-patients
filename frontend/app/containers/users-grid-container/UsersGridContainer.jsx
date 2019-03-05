@@ -2,15 +2,18 @@ import React, {
   Component
 } from 'react'
 import _ from 'lodash'
+import axios from 'axios'
+
+import './UsersGridContainer.css'
+import UserInformationContainer from '../UserInformationContainer';
 
 class UsersGridContainer extends Component {
   constructor(props) {
     super(props)
 
-    console.log(props)
-
     this.state = {
-      patients: []
+      patients: [],
+      selectedUser: null
     }
 
     if (this.props.patients) {
@@ -18,33 +21,58 @@ class UsersGridContainer extends Component {
     }
 
     this.selectUser = this.selectUser.bind(this)
-    this.createGrid = this.createGrid.bind(this)
 
   }
 
-  selectUser(e) {
-    let value = e.target.value
-    let name = e.target.name
-
-    console.log(value, name)
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return {
+      ...prevState,
+      ...nextProps
+    }
   }
 
-  createGrid() {
-    const grid = []
+  selectUser = (userId) => (e) => {
+    e.preventDefault()
 
-    _.each(this.state.patients, (patient) => {
-      grid.push(<div> patient.id </div>)
-    })
+    axios
+      .get(`/api/users/${userId}`)
+      .then((response) => {        
+        this.setState(
+          (prevState) => ({
+            ...prevState,
+            selectedUser: response.data
+          }),
+          () => {}
+        )
 
-
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
-
+  
   render() {
+    const patients = this.state.patients.map((patient) => {
+      return (
+        <a href="" key={patient.id} onClick={this.selectUser(patient.id)}>
+          {patient.name}
+        </a>
+      )
+    })
+    
     return (
       <div>
         <h2>Patients</h2>
-        <div style={{display: 'flex', flexDirection: 'column'}}>
-          {this.createGrid()}
+        <div className="users-container">
+          
+          <div className="left-half">
+            {patients}
+          </div>
+
+          <div className="right-half">
+            <UserInformationContainer user={this.state.selectedUser} />
+          </div>
+
         </div>
       </div>
     )

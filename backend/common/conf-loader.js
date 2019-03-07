@@ -1,9 +1,3 @@
-/**
- * @fileoverview A simple module that returns a function that takes a config name in the configuration directory, and
- *               loads that configuration file.
- * @author christian.d.battaglia@gmail.com
- */
-
 const deref = require('json-schema-deref-sync')
 const minimist = require('minimist')
 

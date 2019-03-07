@@ -104,7 +104,7 @@
                 "operationId": "getOne",
                 "responses": {
                     "200": {
-                        "description": "Succesfully fetch user.",
+                        "description": "Get user by id.",
                         "schema": {
                             "type": "object",
                             "items": {
@@ -241,6 +241,10 @@
                     "type": "string",
                     "description": "A business key for the user."
                 },
+                "type": {
+                    "type": "string",
+                    "description": "Type."
+                },
                 "name": {
                     "type": "string",
                     "description": "Name."
@@ -264,6 +268,7 @@
             },
             "example": {
                 "userKey": "b8ef5ee6-eaea-4914-aaa2-edb080ff3856",
+                "type": "patient",
                 "name": "Ron Weasley",
                 "age": 25,
                 "mailingAddress": "1 Hogwarts, Somewhere, UK",

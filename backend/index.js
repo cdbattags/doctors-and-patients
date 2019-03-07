@@ -1,7 +1,3 @@
-/**
- * @fileoverview Main module interface for "doctors-and-patients"
- * @author christian.d.battaglia@gmail.com
- */
 
 const _ = require('lodash')
 const minimist = require('minimist')
@@ -19,6 +15,7 @@ app.set('port', argv.port || 9300)
 let server
 
 module.exports = {
+    
     /**
      * Returns the current server instance, if any.
      * @return {Object} server instance
@@ -80,4 +77,5 @@ module.exports = {
             }
         )
     }
+    
 }

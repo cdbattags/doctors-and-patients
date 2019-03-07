@@ -1,9 +1,3 @@
-/**
- * @fileoverview Main application code for "doctors-and-patients".
- * @author christian.d.battaglia@gmail.com
- */
-
-// main 
 const bodyParser = require('body-parser')
 const compress = require('compression')
 const cors = require('cors')

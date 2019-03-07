@@ -1,7 +1,4 @@
 /**
- * @fileoverview Creating a common singleton logger.
- * @author christian.d.battaglia@gmail.com
- *
  * Log levels: error: 0, warn: 1, info: 2, debug: 3
  *
  * Environment specific configuration:

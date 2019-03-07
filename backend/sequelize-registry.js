@@ -3,7 +3,6 @@
  *               directory ignoring certain blacklisted files, including the README.md and this file itself. The
  *               registration process only happens once, and is bound to the current Sequelize instance, which is also
  *               only created once and done within this file.
- * @author christian.d.battaglia@gmail.com
  */
 
 const fs = require('fs')

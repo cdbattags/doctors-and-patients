@@ -1,7 +1,6 @@
 const logger = require('../common/logger')(module.filename)
 const models = require('../sequelize-registry')
 const _ = require('lodash')
-const moment = require('moment')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const Op = models.sequelize.Op
@@ -13,8 +12,6 @@ const UserController = {
 
     getMany: (request, response, next) => {
         
-        const params = request.swagger.params
-
         return models.User.findAll({
                 order: [
                     ['updated_at', 'DESC']
@@ -27,6 +24,7 @@ const UserController = {
                 console.log('There was an error querying users', JSON.stringify(err))
                 return response.status(500).send(err)
             })
+
     },
 
     getOne: (request, response, next) => {
@@ -84,9 +82,6 @@ const UserController = {
             })
     },
 
-    /**
-     * POST /login
-     */
     login: (request, response, next) => {
 
         const params = request.swagger.params
@@ -165,9 +160,6 @@ const UserController = {
 
     },
 
-    /**
-     * POST /login
-     */
     me: (request, response, next) => {
 
         const token = request.headers.authorization
@@ -189,8 +181,6 @@ const UserController = {
         }
 
         const decodedToken = jwtDecode(token)
-
-        console.log(decodedToken)
 
         const queries = []
 

@@ -2,7 +2,6 @@
 
 /**
  * @fileoverview Executable for running the Curriculum Insights service layer.
- * @author christian.d.battaglia@gmail.com
  */
 
 const minimist = require('minimist')

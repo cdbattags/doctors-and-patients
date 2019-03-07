@@ -3,12 +3,15 @@ const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 
-
 /**
  * `..` Since this config file is in the config folder so we need
  * to resolve path in the top level folder.
  */
-const resolve = relativePath => path.resolve(__dirname, '..', relativePath)
+const resolve = relativePath => path.resolve(
+    __dirname,
+    '..',
+    relativePath
+)
 
 module.exports = {
     entry: {
@@ -16,7 +19,6 @@ module.exports = {
     },
     output: {
         filename: 'js/[name].js',
-        // Folder where the output of webpack's result go.
         path: resolve('public'),
     },
     module: {
@@ -44,7 +46,10 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: ["style-loader", "css-loader"]
+                use: [
+                    "style-loader", 
+                    "css-loader"
+                ]
             },
         ],
     },
@@ -55,15 +60,13 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: 'output.css'
         }),
-        new CleanWebpackPlugin(
-            ['public'],
-            {
-                root: resolve('.'),
-                verbose: true,
-                dry: false
-            }
-        )
-
+        new CleanWebpackPlugin({
+            cleanOnceBeforeBuildPatterns: [
+                resolve('public')
+            ],
+            verbose: true,
+            dry: false
+        })
     ],
     resolve: {
         extensions: ['.js', '.jsx']

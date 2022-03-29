@@ -55,7 +55,7 @@
         "jsonwebtoken": "^8.5.0",
         "jwt-decode": "^2.2.0",
         "lodash": "^4.17.11",
-        "minimist": "^1.2.0",
+        "minimist": "^1.2.6",
         "moment": "^2.24.0",
         "morgan": "^1.9.1",
         "pug": "^2.0.3",
